@@ -181,6 +181,23 @@ input:focus{outline:2px solid #111}
  .offer-title{font-size:21px}
 }
 
+
+.deal-error{
+  display:none;
+  background:#fff1f1;
+  color:#d40000;
+  border:1px solid #ffb5b5;
+  border-radius:9px;
+  padding:10px 12px;
+  margin:0 0 12px;
+  text-align:center;
+  font-size:14px;
+  font-weight:800;
+}
+.offer:not(.selected){
+  opacity:.94;
+}
+
 </style>
 </head>
 <body>
@@ -204,7 +221,7 @@ input:focus{outline:2px solid #111}
 <section class="order-area">
   <div class="offer-title">SELECT YOUR DEAL</div>
   <div class="offers">
-    <div class="offer selected" data-qty="1" data-price="799" onclick="selectOffer(this)">
+    <div class="offer" data-qty="1" data-price="799" onclick="selectOffer(this)">
       <div class="offer-head red"><div class="buy">BUY 1</div><div class="price">Rs. 799</div></div>
       <div class="offer-body"><div class="qty">1 Pair Heel Protectors</div><div class="free">+ FREE 1 Pair Silicone Heel Protectors</div></div>
     </div>
@@ -217,7 +234,7 @@ input:focus{outline:2px solid #111}
       <div class="offer-body"><div class="qty">3 Pairs Heel Protectors</div><div class="free">+ FREE 3 Pairs Silicone Heel Protectors</div></div>
     </div>
   </div>
-  <button class="order-btn" onclick="document.getElementById('order').scrollIntoView()">🛒 ORDER NOW →</button>
+  <button class="order-btn" onclick="document.getElementById('order').scrollIntoView({behavior:'smooth'})">🛒 SELECT DEAL & ORDER →</button>
 </section>
 
 <section class="form-section" id="order">
@@ -242,13 +259,14 @@ input:focus{outline:2px solid #111}
       <label>CITY</label>
       <input id="city" required placeholder="Enter city">
 
+      <div id="dealError" class="deal-error">Please select a deal before placing your order.</div>
       <div class="summary">
-        <div class="row"><span>Deal</span><b id="sumDeal">Buy 1</b></div>
-        <div class="row"><span>Heel Protectors</span><b id="sumQty">1 Pair</b></div>
-        <div class="row"><span>Free Silicone Protectors</span><b id="sumFree">1 Pair</b></div>
-        <div class="row"><span>Product Price</span><b>Rs. <span id="sumPrice">799</span></b></div>
+        <div class="row"><span>Deal</span><b id="sumDeal">Please Select</b></div>
+        <div class="row"><span>Heel Protectors</span><b id="sumQty">—</b></div>
+        <div class="row"><span>Free Silicone Protectors</span><b id="sumFree">—</b></div>
+        <div class="row"><span>Product Price</span><b>Rs. <span id="sumPrice">—</span></b></div>
         <div class="row"><span>Delivery Charges</span><b>Rs. 250</b></div>
-        <div class="row total"><span>Grand Total</span><span>Rs. <span id="sumTotal">1,049</span></span></div>
+        <div class="row total"><span>Grand Total</span><span>Rs. <span id="sumTotal">—</span></span></div>
       </div>
 
       <button class="submit" type="submit">CONFIRM ORDER →</button>
@@ -267,17 +285,27 @@ input:focus{outline:2px solid #111}
 </div>
 
 <script>
-let selectedQty=1, selectedPrice=799;
+let selectedQty=null, selectedPrice=null;
 
 function selectOffer(el){
   document.querySelectorAll('.offer').forEach(x=>x.classList.remove('selected'));
   el.classList.add('selected');
   selectedQty=Number(el.dataset.qty);
   selectedPrice=Number(el.dataset.price);
+  document.getElementById('dealError').style.display='none';
   updateSummary();
+  document.getElementById('order').scrollIntoView({behavior:'smooth'});
 }
 
 function updateSummary(){
+  if(selectedQty === null || selectedPrice === null){
+    document.getElementById('sumDeal').textContent='Please Select';
+    document.getElementById('sumQty').textContent='—';
+    document.getElementById('sumFree').textContent='—';
+    document.getElementById('sumPrice').textContent='—';
+    document.getElementById('sumTotal').textContent='—';
+    return;
+  }
   const pairText = selectedQty === 1 ? '1 Pair' : selectedQty + ' Pairs';
   document.getElementById('sumDeal').textContent='Buy '+selectedQty;
   document.getElementById('sumQty').textContent=pairText;
@@ -292,6 +320,13 @@ document.getElementById('phone').addEventListener('input',function(){
 
 document.getElementById('orderForm').addEventListener('submit',function(e){
   e.preventDefault();
+
+  if(selectedQty === null || selectedPrice === null){
+    document.getElementById('dealError').style.display='block';
+    document.querySelector('.offers').scrollIntoView({behavior:'smooth',block:'center'});
+    return;
+  }
+
   const phone=document.getElementById('phone').value;
   const err=document.getElementById('phoneError');
   if(!/^03\d{9}$/.test(phone)){
@@ -306,7 +341,6 @@ document.getElementById('orderForm').addEventListener('submit',function(e){
   document.getElementById('thanks').style.display='block';
   window.scrollTo({top:document.getElementById('order').offsetTop-10,behavior:'smooth'});
 });
-updateSummary();
 </script>
 </body>
 </html>
