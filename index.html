@@ -368,6 +368,23 @@ input:focus{outline:2px solid #111}
 }
 
 </style>
+<style>
+#thanks{display:none;position:fixed;inset:0;z-index:99999;overflow-y:auto;background:linear-gradient(180deg,#eef7ff 0%,#ffffff 55%,#eef7ff 100%);padding:28px 16px;}
+#thanks .ty-inner{max-width:560px;margin:20px auto 40px;background:#fff;border-radius:22px;padding:30px 22px;box-shadow:0 12px 40px rgba(20,100,170,.14);text-align:center;}
+#thanks .check{width:72px;height:72px;border-radius:50%;background:#1687dc;color:#fff;display:flex;align-items:center;justify-content:center;font-size:42px;font-weight:800;margin:0 auto 16px;}
+#thanks h2{margin:0 0 8px;color:#0c3760;font-size:32px;}
+#thanks .ty-sub{color:#1687dc;font-weight:700;font-size:18px;margin:0 0 20px;}
+#thanks .ty-box{text-align:left;background:#f4f9ff;border-radius:14px;padding:16px;margin-top:18px;}
+#thanks .ty-row{display:flex;justify-content:space-between;gap:12px;padding:9px 0;border-bottom:1px solid #dcecf9;font-size:14px;}
+#thanks .ty-row:last-child{border-bottom:0;}
+#thanks .ty-row b{color:#123d61;}
+#thanks .ty-total{font-size:18px;font-weight:800;color:#1687dc;}
+#thanks .ty-steps{text-align:left;margin-top:22px;}
+#thanks .ty-step{display:flex;gap:12px;align-items:flex-start;margin:13px 0;}
+#thanks .ty-num{min-width:30px;height:30px;border-radius:50%;background:#e2f2ff;color:#1687dc;font-weight:800;display:flex;align-items:center;justify-content:center;}
+#thanks .back-btn{margin-top:22px;border:0;border-radius:12px;background:#1687dc;color:#fff;padding:13px 22px;font-weight:800;cursor:pointer;width:100%;font-size:15px;}
+</style>
+
 </head>
 <body>
 
@@ -442,13 +459,31 @@ input:focus{outline:2px solid #111}
     </form>
   </div>
 
-  <div class="form-card thanks" id="thanks">
+  <div id="thanks">
+  <div class="ty-inner">
     <div class="check">✓</div>
     <h2>Thank You!</h2>
-    <p>Your order has been received successfully.</p>
-    <p style="font-size:13px;color:#777">Order ID: <b id="thankOrderId">HP-000000</b></p>
+    <p class="ty-sub">Your Order Has Been Placed Successfully 🎉</p>
     <p>Our team will contact you shortly to confirm your order.</p>
+    <div class="ty-box">
+      <div class="ty-row"><span>Product</span><b>Silicone Heel Protectors</b></div>
+      <div class="ty-row"><span>Deal</span><b id="thankDeal">—</b></div>
+      <div class="ty-row"><span>Quantity</span><b id="thankQty">—</b></div>
+      <div class="ty-row"><span>Product Price</span><b>Rs. <span id="thankPrice">—</span></b></div>
+      <div class="ty-row"><span>Delivery</span><b>Rs. 250</b></div>
+      <div class="ty-row ty-total"><span>Grand Total</span><b>Rs. <span id="thankTotal">—</span></b></div>
+      <div class="ty-row"><span>Payment</span><b>Cash on Delivery</b></div>
+      <div class="ty-row"><span>Order ID</span><b id="thankOrderId">HP-000000</b></div>
+    </div>
+    <div class="ty-steps">
+      <h3 style="text-align:center;color:#0c3760">What Happens Next?</h3>
+      <div class="ty-step"><span class="ty-num">1</span><div><b>Confirmation Call</b><br><small>Our team will call you to confirm your order.</small></div></div>
+      <div class="ty-step"><span class="ty-num">2</span><div><b>Processing</b><br><small>Your parcel will be prepared and dispatched.</small></div></div>
+      <div class="ty-step"><span class="ty-num">3</span><div><b>Get It At Your Door</b><br><small>Your order will be delivered through courier.</small></div></div>
+    </div>
+    <button class="back-btn" type="button" onclick="backToWebsite()">← BACK TO WEBSITE</button>
   </div>
+</div>
 </section>
 
 
@@ -579,61 +614,46 @@ document.getElementById('phone').addEventListener('input',function(){
 
 document.getElementById('orderForm').addEventListener('submit',function(e){
   e.preventDefault();
-
-  // Deal is required.
   if(selectedQty === null || selectedPrice === null){
     document.getElementById('dealError').style.display='block';
     document.querySelector('.offers').scrollIntoView({behavior:'smooth',block:'center'});
     return;
   }
-
-  // Browser validates all required fields before this handler is reached.
   const phone=document.getElementById('phone').value;
   const err=document.getElementById('phoneError');
-
-  if(!/^03\d{9}$/.test(phone)){
-    err.style.display='block';
-    document.getElementById('phone').focus();
-    return;
-  }
-
+  if(!/^03\d{9}$/.test(phone)){ err.style.display='block'; document.getElementById('phone').focus(); return; }
   err.style.display='none';
-
-  const selectedPairText = selectedQty === 1 ? '1 Pair' : selectedQty + ' Pairs';
-  const total = selectedPrice + 250;
-  const orderId = 'HP-' + Math.floor(100000 + Math.random() * 900000);
-
-  document.getElementById('thankDeal').textContent = 'Buy ' + selectedQty;
-  document.getElementById('thankQty').textContent = selectedPairText;
-  document.getElementById('thankPrice').textContent = selectedPrice.toLocaleString();
-  document.getElementById('thankTotal').textContent = total.toLocaleString();
-  document.getElementById('thankOrderId').textContent = orderId;
-
-  // CONFIRM ORDER clicked successfully -> processing.
+  const selectedPairText=selectedQty===1?'1 Pair':selectedQty+' Pairs';
+  const total=selectedPrice+250;
+  const orderId='HP-'+Math.floor(100000+Math.random()*900000);
+  document.getElementById('thankDeal').textContent='Buy '+selectedQty;
+  document.getElementById('thankQty').textContent=selectedPairText;
+  document.getElementById('thankPrice').textContent=selectedPrice.toLocaleString();
+  document.getElementById('thankTotal').textContent=total.toLocaleString();
+  document.getElementById('thankOrderId').textContent=orderId;
   document.getElementById('processingOverlay').style.display='flex';
-
-  // Reset form after 1 second.
-  setTimeout(function(){
-    document.getElementById('orderForm').reset();
-  },1000);
-
-  // After processing, show the Thank You page.
   setTimeout(function(){
     document.getElementById('processingOverlay').style.display='none';
     document.getElementById('formCard').style.display='none';
     document.getElementById('thanks').style.display='block';
-    window.location.hash='thank-you';
-    window.scrollTo({top:0,behavior:'smooth'});
-  },1500);
+    history.pushState(null,'','#thank-you');
+    window.scrollTo(0,0);
+  },2000);
 });
 
-window.addEventListener('DOMContentLoaded', function(){
-  if(window.location.hash === '#thank-you'){
+function backToWebsite(){
+  document.getElementById('thanks').style.display='none';
+  document.getElementById('formCard').style.display='block';
+  history.pushState(null,'',location.pathname+location.search);
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+window.addEventListener('DOMContentLoaded',function(){
+  if(location.hash==='#thank-you'){
     document.getElementById('formCard').style.display='none';
     document.getElementById('thanks').style.display='block';
   }
 });
-
 </script>
 </body>
 </html>
