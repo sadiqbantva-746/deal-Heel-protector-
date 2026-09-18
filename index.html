@@ -109,6 +109,78 @@ input:focus{outline:2px solid #111}
   padding:14px;
 }
 
+
+/* Compact deal cards */
+.offers{
+  max-width:920px;
+  gap:10px;
+}
+.offer{
+  border-width:2px;
+  border-radius:12px;
+  box-shadow:0 3px 12px #00000012;
+}
+.offer-head{
+  padding:8px 6px;
+}
+.offer-head .buy{
+  font-size:22px;
+  line-height:1.05;
+}
+.offer-head .price{
+  font-size:28px;
+  line-height:1.05;
+}
+.offer-body{
+  padding:11px 8px;
+}
+.offer-body .qty{
+  font-size:15px;
+  line-height:1.25;
+}
+.free{
+  margin-top:8px;
+  padding:7px 5px;
+  font-size:13px;
+  line-height:1.2;
+}
+.offer-title{
+  font-size:25px;
+  margin:2px 0 15px;
+}
+.deal-badge{
+  position:absolute;
+  top:7px;
+  right:7px;
+  background:#d90000;
+  color:#fff;
+  border-radius:20px;
+  padding:4px 7px;
+  font-size:10px;
+  font-weight:900;
+}
+.offer{
+  position:relative;
+}
+.order-btn{
+  max-width:420px;
+  padding:14px;
+  font-size:20px;
+  margin-top:18px;
+}
+
+
+@media(max-width:750px){
+ .offers{grid-template-columns:repeat(3,1fr);gap:5px}
+ .offer-head .buy{font-size:16px}
+ .offer-head .price{font-size:19px}
+ .offer-body{padding:8px 4px}
+ .offer-body .qty{font-size:11px}
+ .free{font-size:9px;padding:6px 2px}
+ .deal-badge{font-size:7px;padding:3px 4px;top:4px;right:3px}
+ .offer-title{font-size:21px}
+}
+
 </style>
 </head>
 <body>
@@ -136,11 +208,11 @@ input:focus{outline:2px solid #111}
       <div class="offer-head red"><div class="buy">BUY 1</div><div class="price">Rs. 799</div></div>
       <div class="offer-body"><div class="qty">1 Pair Heel Protectors</div><div class="free">+ FREE 1 Pair Silicone Heel Protectors</div></div>
     </div>
-    <div class="offer" data-qty="2" data-price="1450" onclick="selectOffer(this)">
+    <div class="offer" data-qty="2" data-price="1450" onclick="selectOffer(this)"><div class="deal-badge">MOST POPULAR</div>
       <div class="offer-head green"><div class="buy">BUY 2</div><div class="price">Rs. 1,450</div></div>
       <div class="offer-body"><div class="qty">2 Pairs Heel Protectors</div><div class="free">+ FREE 2 Pairs Silicone Heel Protectors</div></div>
     </div>
-    <div class="offer" data-qty="3" data-price="1900" onclick="selectOffer(this)">
+    <div class="offer" data-qty="3" data-price="1900" onclick="selectOffer(this)"><div class="deal-badge">BEST VALUE</div>
       <div class="offer-head blue"><div class="buy">BUY 3</div><div class="price">Rs. 1,900</div></div>
       <div class="offer-body"><div class="qty">3 Pairs Heel Protectors</div><div class="free">+ FREE 3 Pairs Silicone Heel Protectors</div></div>
     </div>
@@ -171,10 +243,12 @@ input:focus{outline:2px solid #111}
       <input id="city" required placeholder="Enter city">
 
       <div class="summary">
-        <div class="row"><span>Selected Deal</span><b id="sumDeal">Buy 1</b></div>
+        <div class="row"><span>Deal</span><b id="sumDeal">Buy 1</b></div>
+        <div class="row"><span>Heel Protectors</span><b id="sumQty">1 Pair</b></div>
+        <div class="row"><span>Free Silicone Protectors</span><b id="sumFree">1 Pair</b></div>
         <div class="row"><span>Product Price</span><b>Rs. <span id="sumPrice">799</span></b></div>
         <div class="row"><span>Delivery Charges</span><b>Rs. 250</b></div>
-        <div class="row total"><span>Total</span><span>Rs. <span id="sumTotal">1,049</span></span></div>
+        <div class="row total"><span>Grand Total</span><span>Rs. <span id="sumTotal">1,049</span></span></div>
       </div>
 
       <button class="submit" type="submit">CONFIRM ORDER →</button>
@@ -204,9 +278,11 @@ function selectOffer(el){
 }
 
 function updateSummary(){
+  const pairText = selectedQty === 1 ? '1 Pair' : selectedQty + ' Pairs';
   document.getElementById('sumDeal').textContent='Buy '+selectedQty;
+  document.getElementById('sumQty').textContent=pairText;
+  document.getElementById('sumFree').textContent=pairText;
   document.getElementById('sumPrice').textContent=selectedPrice.toLocaleString();
-  document.getElementById('sumPrice2').textContent=selectedPrice.toLocaleString();
   document.getElementById('sumTotal').textContent=(selectedPrice+250).toLocaleString();
 }
 
@@ -224,6 +300,8 @@ document.getElementById('orderForm').addEventListener('submit',function(e){
     return;
   }
   err.style.display='none';
+  document.getElementById('thankQty').textContent = selectedQty === 1 ? '1 Pair' : selectedQty + ' Pairs';
+  document.getElementById('thankTotal').textContent = (selectedPrice + 250).toLocaleString();
   document.getElementById('formCard').style.display='none';
   document.getElementById('thanks').style.display='block';
   window.scrollTo({top:document.getElementById('order').offsetTop-10,behavior:'smooth'});
