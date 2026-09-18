@@ -198,6 +198,175 @@ input:focus{outline:2px solid #111}
   opacity:.94;
 }
 
+
+.customer-reviews{
+  background:#fff;
+  padding:48px 14px 50px;
+}
+.reviews-heading{
+  text-align:center;
+  margin-bottom:28px;
+}
+.reviews-badge{
+  display:inline-block;
+  background:#111;
+  color:#fff;
+  border-radius:30px;
+  padding:7px 15px;
+  font-size:12px;
+  font-weight:900;
+  letter-spacing:.6px;
+}
+.reviews-heading h2{
+  margin:10px 0 5px;
+  font-size:32px;
+}
+.reviews-heading p{
+  margin:0 0 10px;
+  color:#777;
+}
+.overall-rating{
+  font-size:18px;
+  letter-spacing:2px;
+}
+.overall-rating b{
+  letter-spacing:0;
+  margin-left:7px;
+}
+.reviews-grid{
+  max-width:1050px;
+  margin:auto;
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:14px;
+}
+.customer-review{
+  border:1px solid #e6e6e6;
+  border-radius:14px;
+  padding:18px;
+  background:#fff;
+  box-shadow:0 4px 16px rgba(0,0,0,.06);
+}
+.review-top{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+.avatar{
+  width:40px;
+  height:40px;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:#111;
+  color:#fff;
+  font-weight:900;
+}
+.review-top small{
+  display:block;
+  color:#888;
+  font-size:11px;
+  margin-top:2px;
+}
+.review-top .stars{
+  margin-left:auto;
+  font-size:13px;
+  letter-spacing:1px;
+}
+.customer-review p{
+  color:#555;
+  line-height:1.5;
+  font-size:14px;
+  margin:14px 0 2px;
+}
+.review-order-btn{
+  display:block;
+  margin:28px auto 0;
+  border:0;
+  background:#e50909;
+  color:#fff;
+  border-radius:40px;
+  padding:15px 28px;
+  font-size:17px;
+  font-weight:900;
+  cursor:pointer;
+}
+@media(max-width:750px){
+  .reviews-grid{grid-template-columns:1fr 1fr;gap:9px}
+  .customer-review{padding:13px}
+  .review-top .stars{font-size:10px}
+  .customer-review p{font-size:12px}
+  .reviews-heading h2{font-size:26px}
+}
+@media(max-width:480px){
+  .reviews-grid{grid-template-columns:1fr}
+}
+
+
+.reviews-announcement{
+  width:100%;
+  overflow:hidden;
+  background:#111;
+  color:#fff;
+  border-radius:10px;
+  margin:0 auto 25px;
+  white-space:nowrap;
+}
+.reviews-announcement-track{
+  display:inline-flex;
+  min-width:max-content;
+  animation:reviewsMove 20s linear infinite;
+}
+.reviews-announcement-track span{
+  display:inline-block;
+  padding:11px 30px;
+  font-size:13px;
+  font-weight:900;
+  letter-spacing:.3px;
+}
+@keyframes reviewsMove{
+  from{transform:translateX(0)}
+  to{transform:translateX(-50%)}
+}
+
+
+.processing-overlay{
+  display:none;
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.62);
+  z-index:9999;
+  align-items:center;
+  justify-content:center;
+}
+.processing-box{
+  width:min(360px,90%);
+  background:#fff;
+  border-radius:16px;
+  padding:28px 20px;
+  text-align:center;
+  box-shadow:0 15px 50px rgba(0,0,0,.25);
+}
+.processing-box h3{margin:14px 0 5px;font-size:22px}
+.processing-box p{margin:0;color:#777}
+.spinner{
+  width:46px;height:46px;
+  margin:auto;
+  border:5px solid #ddd;
+  border-top-color:#e50909;
+  border-radius:50%;
+  animation:spin .8s linear infinite;
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+
+.processing-box .processing-note{
+  font-size:12px;
+  color:#888;
+  margin-top:8px;
+}
+
 </style>
 </head>
 <body>
@@ -277,9 +446,99 @@ input:focus{outline:2px solid #111}
     <div class="check">✓</div>
     <h2>Thank You!</h2>
     <p>Your order has been received successfully.</p>
+    <p style="font-size:13px;color:#777">Order ID: <b id="thankOrderId">HP-000000</b></p>
     <p>Our team will contact you shortly to confirm your order.</p>
   </div>
 </section>
+
+
+<section class="customer-reviews">
+  <div class="container">
+    <div class="reviews-announcement">
+      <div class="reviews-announcement-track">
+        <span>⭐ CUSTOMER REVIEWS</span>
+        <span>⭐ 4.9/5 CUSTOMER RATING</span>
+        <span>❤️ HAPPY CUSTOMERS</span>
+        <span>⭐ CUSTOMER REVIEWS</span>
+        <span>⭐ 4.9/5 CUSTOMER RATING</span>
+        <span>❤️ HAPPY CUSTOMERS</span>
+      </div>
+    </div>
+    <div class="reviews-heading">
+      <h2>What Our Customers Say</h2>
+      <p>Comfortable steps, happy customers ❤️</p>
+    </div>
+
+    <div class="reviews-grid">
+      <div class="customer-review">
+        <div class="review-top">
+          <div class="avatar">A</div>
+          <div><b>Ayesha K.</b><small>Verified Customer</small></div>
+          <span class="stars">★★★★★</span>
+        </div>
+        <p>“Bohat comfortable hain aur shoes ke andar easily fit ho jate hain. Walking ke liye mujhe kaafi useful lage.”</p>
+      </div>
+
+      <div class="customer-review">
+        <div class="review-top">
+          <div class="avatar">S</div>
+          <div><b>Sana M.</b><small>Verified Customer</small></div>
+          <span class="stars">★★★★★</span>
+        </div>
+        <p>“Soft material hai aur pehnne mein bilkul comfortable feel hota hai. Product quality achi hai.”</p>
+      </div>
+
+      <div class="customer-review">
+        <div class="review-top">
+          <div class="avatar">U</div>
+          <div><b>Usman A.</b><small>Verified Customer</small></div>
+          <span class="stars">★★★★★</span>
+        </div>
+        <p>“Long time standing ke waqt use kiya. Lightweight hain aur daily use ke liye convenient hain.”</p>
+      </div>
+
+      <div class="customer-review">
+        <div class="review-top">
+          <div class="avatar">H</div>
+          <div><b>Hina R.</b><small>Verified Customer</small></div>
+          <span class="stars">★★★★★</span>
+        </div>
+        <p>“Easy to wear aur reusable hain. Size bhi theek raha. Overall experience acha raha.”</p>
+      </div>
+
+      <div class="customer-review">
+        <div class="review-top">
+          <div class="avatar">B</div>
+          <div><b>Bilal S.</b><small>Verified Customer</small></div>
+          <span class="stars">★★★★★</span>
+        </div>
+        <p>“Product exactly jaisa expected tha. Walking aur routine use mein comfortable feel hota hai.”</p>
+      </div>
+
+      <div class="customer-review">
+        <div class="review-top">
+          <div class="avatar">M</div>
+          <div><b>Maryam F.</b><small>Verified Customer</small></div>
+          <span class="stars">★★★★★</span>
+        </div>
+        <p>“Soft aur lightweight hain. Shoes ke saath use karna easy hai. Mujhe design bhi pasand aya.”</p>
+      </div>
+    </div>
+
+    <button class="review-order-btn" onclick="document.getElementById('order').scrollIntoView({behavior:'smooth'})">
+      🛒 SELECT YOUR DEAL & ORDER NOW
+    </button>
+  </div>
+</section>
+
+
+<div id="processingOverlay" class="processing-overlay">
+  <div class="processing-box">
+    <div class="spinner"></div>
+    <h3>Processing Your Order...</h3>
+    <p>Please wait a moment.</p><div class="processing-note">Your order is being confirmed.</div>
+  </div>
+</div>
 
 <footer class="footer">SMALL SUPPORT • BIG DIFFERENCE ❤️</footer>
 </div>
@@ -321,26 +580,60 @@ document.getElementById('phone').addEventListener('input',function(){
 document.getElementById('orderForm').addEventListener('submit',function(e){
   e.preventDefault();
 
+  // Deal is required.
   if(selectedQty === null || selectedPrice === null){
     document.getElementById('dealError').style.display='block';
     document.querySelector('.offers').scrollIntoView({behavior:'smooth',block:'center'});
     return;
   }
 
+  // Browser validates all required fields before this handler is reached.
   const phone=document.getElementById('phone').value;
   const err=document.getElementById('phoneError');
+
   if(!/^03\d{9}$/.test(phone)){
     err.style.display='block';
     document.getElementById('phone').focus();
     return;
   }
+
   err.style.display='none';
-  document.getElementById('thankQty').textContent = selectedQty === 1 ? '1 Pair' : selectedQty + ' Pairs';
-  document.getElementById('thankTotal').textContent = (selectedPrice + 250).toLocaleString();
-  document.getElementById('formCard').style.display='none';
-  document.getElementById('thanks').style.display='block';
-  window.scrollTo({top:document.getElementById('order').offsetTop-10,behavior:'smooth'});
+
+  const selectedPairText = selectedQty === 1 ? '1 Pair' : selectedQty + ' Pairs';
+  const total = selectedPrice + 250;
+  const orderId = 'HP-' + Math.floor(100000 + Math.random() * 900000);
+
+  document.getElementById('thankDeal').textContent = 'Buy ' + selectedQty;
+  document.getElementById('thankQty').textContent = selectedPairText;
+  document.getElementById('thankPrice').textContent = selectedPrice.toLocaleString();
+  document.getElementById('thankTotal').textContent = total.toLocaleString();
+  document.getElementById('thankOrderId').textContent = orderId;
+
+  // CONFIRM ORDER clicked successfully -> processing.
+  document.getElementById('processingOverlay').style.display='flex';
+
+  // Reset form after 1 second.
+  setTimeout(function(){
+    document.getElementById('orderForm').reset();
+  },1000);
+
+  // After processing, show the Thank You page.
+  setTimeout(function(){
+    document.getElementById('processingOverlay').style.display='none';
+    document.getElementById('formCard').style.display='none';
+    document.getElementById('thanks').style.display='block';
+    window.location.hash='thank-you';
+    window.scrollTo({top:0,behavior:'smooth'});
+  },1500);
 });
+
+window.addEventListener('DOMContentLoaded', function(){
+  if(window.location.hash === '#thank-you'){
+    document.getElementById('formCard').style.display='none';
+    document.getElementById('thanks').style.display='block';
+  }
+});
+
 </script>
 </body>
 </html>
